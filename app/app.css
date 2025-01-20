@@ -1,0 +1,43 @@
+@import '@nativescript/theme/css/core.css';
+@import '@nativescript/theme/css/default.css';
+
+.page {
+  background-color: #f4f4f4;
+}
+
+.action-bar {
+  background-color: #4caf50;
+  color: white;
+}
+
+.input {
+  margin: 10 0;
+  padding: 10;
+  background-color: white;
+  border-width: 1;
+  border-color: #ddd;
+  border-radius: 4;
+}
+
+.btn {
+  margin: 10 0;
+  padding: 10;
+  border-radius: 4;
+}
+
+.btn-primary {
+  background-color: #4caf50;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #2196F3;
+  color: white;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border-width: 1;
+  border-color: #757575;
+  color: #757575;
+}

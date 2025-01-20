@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page navigatingTo="onNavigatingTo" class="page">
+  <ActionBar title="madyuk.ai" class="action-bar" />
+  <StackLayout class="p-20">
+    <Label text="Welcome to madyuk.ai" class="h2 text-center" />
+    <TextField hint="Email" text="{{ email }}" keyboardType="email" class="input" />
+    <TextField hint="Password" text="{{ password }}" secure="true" class="input" />
+    <Button text="Sign In" tap="onSignIn" class="btn btn-primary" />
+    <Button text="Switch to Sign Up" tap="onToggleAuth" class="btn btn-secondary" />
+    <Button text="Continue as Guest" tap="onGuestAccess" class="btn btn-outline" />
+  </StackLayout>
+</Page>

@@ -1,0 +1,154 @@
+/* Mobile-optimized styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+#app {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 0;
+    color: #4caf50;
+}
+
+.task-input {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+.task-input input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.location-btn {
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    background-color: #4caf50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.task-list {
+    margin-top: 16px;
+}
+
+.task-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.task-filters button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 16px;
+    background-color: #eee;
+    color: #666;
+    white-space: nowrap;
+}
+
+.task-filters button.active {
+    background-color: #4caf50;
+    color: white;
+}
+
+#tasks {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-item {
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.task-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.task-text {
+    flex: 1;
+}
+
+.location-text {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Auth styles */
+.auth-section {
+    padding: 24px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.auth-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.auth-section input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.auth-section button {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#auth-button {
+    background-color: #4caf50;
+    color: white;
+}
+
+#toggle-auth {
+    background-color: #2196F3;
+    color: white;
+}
+
+.guest-btn {
+    background-color: #757575;
+    color: white;
+}

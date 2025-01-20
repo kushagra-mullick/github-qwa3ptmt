@@ -1,0 +1,355 @@
+/* Base styles */
+:root {
+  --primary-color: #2563eb;
+  --text-primary: #1a1a1a;
+  --text-secondary: #64748b;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-secondary);
+  margin: 0;
+  padding: 0;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+/* Auth Section */
+.auth-section {
+  background: var(--bg-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  max-width: 400px;
+  margin: 4rem auto;
+}
+
+.auth-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.auth-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-section input {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  transition: border-color 0.15s ease;
+}
+
+.auth-section input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.auth-section button {
+  padding: 0.75rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+#auth-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#auth-button:hover {
+  background-color: #1d4ed8;
+}
+
+#toggle-auth {
+  background-color: #f1f5f9;
+  color: var(--text-primary);
+}
+
+#toggle-auth:hover {
+  background-color: #e2e8f0;
+}
+
+.guest-btn {
+  background-color: #94a3b8 !important;
+  color: white !important;
+}
+
+.guest-btn:hover {
+  background-color: #64748b !important;
+}
+
+/* App Section */
+.app-section {
+  background: var(--bg-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+}
+
+.user-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  margin-bottom: 2rem;
+}
+
+#user-status-text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.sign-out-btn {
+  padding: 0.5rem 1rem;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.sign-out-btn:hover {
+  background-color: #dc2626;
+}
+
+/* Input Section */
+.input-section {
+  margin-bottom: 2rem;
+}
+
+.input-section input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  box-sizing: border-box;
+}
+
+.location-input-group {
+  margin: 1rem 0;
+}
+
+.location-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.location-buttons button {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: #f1f5f9;
+  color: var(--text-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.location-buttons button:hover {
+  background-color: #e2e8f0;
+}
+
+/* Map */
+.map {
+  height: 300px;
+  border-radius: var(--radius-md);
+  margin: 1rem 0;
+  display: none;
+  border: 1px solid var(--border-color);
+}
+
+/* Bookmarks Section */
+.bookmarks-section {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.bookmarks-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+}
+
+.add-bookmark-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.add-bookmark-form input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+}
+
+.add-bookmark-form button {
+  padding: 0.75rem 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.bookmarks-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bookmark-item {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.use-bookmark-btn {
+  padding: 0.5rem 1rem;
+  background-color: #f1f5f9;
+  color: var(--text-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.use-bookmark-btn:hover {
+  background-color: #e2e8f0;
+}
+
+.delete-bookmark-btn {
+  padding: 0.5rem;
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.delete-bookmark-btn:hover {
+  background-color: #fecaca;
+}
+
+/* Task List */
+.task-list {
+  margin-top: 2rem;
+}
+
+.task-list h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.task-filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.task-filters button {
+  padding: 0.5rem 1rem;
+  background-color: #f1f5f9;
+  color: var(--text-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.task-filters button.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#tasks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#tasks li {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  transition: transform 0.15s ease;
+}
+
+#tasks li:hover {
+  transform: translateX(4px);
+}
+
+.task-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.task-content.completed .task-text {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.task-content input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.location {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.no-tasks, .no-bookmarks {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  padding: 1rem;
+}

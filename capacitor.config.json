@@ -1,0 +1,13 @@
+{
+  "appId": "ai.geodo.app",
+  "appName": "GeoDo.ai",
+  "webDir": "mobile/www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "Geolocation": {
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
+    }
+  }
+}
