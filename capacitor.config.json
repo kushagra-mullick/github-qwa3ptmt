@@ -1,6 +1,6 @@
 {
-  "appId": "ai.loxic.app",
-  "appName": "Loxic.ai",
+  "appId": "ai.locnix.app",
+  "appName": "Locnix.ai",
   "webDir": "mobile/www",
   "server": {
     "androidScheme": "https"

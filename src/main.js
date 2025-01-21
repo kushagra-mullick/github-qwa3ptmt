@@ -146,6 +146,9 @@ async function handleAuth(e) {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: window.location.origin
+        }
       });
 
       if (error) {
@@ -164,20 +167,29 @@ async function handleAuth(e) {
     } else {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
-        password
+        password,
       });
 
       if (error) {
         if (error.message.includes('Invalid login credentials')) {
           alert('Invalid email or password. Please try again.');
+        } else if (error.message.includes('Failed to fetch')) {
+          alert('Connection error. Please check your internet connection and try again.');
         } else {
           throw error;
         }
+        return;
+      }
+
+      if (data?.user) {
+        currentUser = data.user;
+        showApp();
+        await Promise.all([loadTasks(), loadBookmarks()]);
       }
     }
   } catch (error) {
     console.error('Auth error:', error);
-    alert(error.message);
+    alert('An error occurred. Please try again later.');
   } finally {
     authButton.disabled = false;
   }
