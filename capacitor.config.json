@@ -1,6 +1,6 @@
 {
-  "appId": "ai.geodo.app",
-  "appName": "GeoDo.ai",
+  "appId": "ai.loxic.app",
+  "appName": "Loxic.ai",
   "webDir": "mobile/www",
   "server": {
     "androidScheme": "https"
