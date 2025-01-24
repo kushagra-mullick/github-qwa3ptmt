@@ -130,7 +130,6 @@ function renderBookmarksList() {
       `).join('');
 }
 
-// Auth form handling
 async function handleAuth(e) {
   e.preventDefault();
   
@@ -145,38 +144,34 @@ async function handleAuth(e) {
     if (isSignUp) {
       const { data, error } = await supabase.auth.signUp({
         email,
-        password,
-        options: {
-          emailRedirectTo: window.location.origin
-        }
+        password
       });
 
       if (error) {
         if (error.message.includes('User already registered')) {
           alert('An account with this email already exists. Please sign in instead.');
           toggleAuthMode();
-          return;
+        } else {
+          alert(error.message);
         }
-        throw error;
+        return;
       }
 
       if (data?.user) {
-        alert('Registration successful! You can now sign in.');
+        alert('Registration successful! Please sign in with your credentials.');
         toggleAuthMode();
       }
     } else {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
-        password,
+        password
       });
 
       if (error) {
         if (error.message.includes('Invalid login credentials')) {
           alert('Invalid email or password. Please try again.');
-        } else if (error.message.includes('Failed to fetch')) {
-          alert('Connection error. Please check your internet connection and try again.');
         } else {
-          throw error;
+          alert(error.message);
         }
         return;
       }
@@ -189,7 +184,7 @@ async function handleAuth(e) {
     }
   } catch (error) {
     console.error('Auth error:', error);
-    alert('An error occurred. Please try again later.');
+    alert('Connection error. Please check your internet connection and try again.');
   } finally {
     authButton.disabled = false;
   }
@@ -206,13 +201,9 @@ function toggleAuthMode() {
   const toggleButton = document.getElementById('toggle-auth');
   const form = document.getElementById('auth-form');
   
-  if (authButton.textContent === 'Sign In') {
-    authButton.textContent = 'Sign Up';
-    toggleButton.textContent = 'Switch to Sign In';
-  } else {
-    authButton.textContent = 'Sign In';
-    toggleButton.textContent = 'Switch to Sign Up';
-  }
+  const isSignUp = authButton.textContent === 'Sign In';
+  authButton.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+  toggleButton.textContent = isSignUp ? 'Switch to Sign In' : 'Switch to Sign Up';
   form.reset();
 }
 
@@ -223,6 +214,7 @@ async function handleSignOut() {
       if (error) throw error;
     }
     isGuestMode = false;
+    currentUser = null;
     tasks = [];
     bookmarks = [];
     showAuth();
@@ -230,63 +222,6 @@ async function handleSignOut() {
     console.error('Sign out error:', error);
     alert('Error signing out: ' + error.message);
   }
-}
-
-// Location and Map functions
-function getCurrentLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
-      document.getElementById('location').value = location;
-
-      if (marker) {
-        marker.setLatLng([latitude, longitude]);
-        map.setView([latitude, longitude]);
-      }
-    });
-  } else {
-    alert('Geolocation is not supported by this browser.');
-  }
-}
-
-function toggleMap() {
-  isMapVisible = !isMapVisible;
-  const mapElement = document.getElementById('map');
-  if (isMapVisible) {
-    mapElement.style.display = 'block';
-    initMap();
-  } else {
-    mapElement.style.display = 'none';
-  }
-}
-
-function initMap() {
-  if (map) return;
-
-  const initialPosition = [51.5074, -0.1278];
-  map = L.map('map').setView(initialPosition, 15);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
-
-  marker = L.marker(initialPosition, { draggable: true }).addTo(map);
-
-  marker.on('dragend', function (event) {
-    const lat = event.target.getLatLng().lat;
-    const lng = event.target.getLatLng().lng;
-    document.getElementById('location').value = `Latitude: ${lat}, Longitude: ${lng}`;
-  });
-
-  map.on('click', function (e) {
-    const clickedLocation = e.latlng;
-    marker.setLatLng(clickedLocation);
-    const lat = clickedLocation.lat;
-    const lng = clickedLocation.lng;
-    document.getElementById('location').value = `Latitude: ${lat}, Longitude: ${lng}`;
-  });
 }
 
 // Task Management Functions
@@ -423,56 +358,104 @@ function renderTasks() {
       `).join('');
 }
 
+// Location and Map functions
+function getCurrentLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
+      document.getElementById('location').value = location;
+
+      if (marker) {
+        marker.setLatLng([latitude, longitude]);
+        map.setView([latitude, longitude]);
+      }
+    });
+  } else {
+    alert('Geolocation is not supported by this browser.');
+  }
+}
+
+function toggleMap() {
+  isMapVisible = !isMapVisible;
+  const mapElement = document.getElementById('map');
+  if (isMapVisible) {
+    mapElement.style.display = 'block';
+    initMap();
+  } else {
+    mapElement.style.display = 'none';
+  }
+}
+
+function initMap() {
+  if (map) return;
+
+  const initialPosition = [51.5074, -0.1278];
+  map = L.map('map').setView(initialPosition, 15);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  marker = L.marker(initialPosition, { draggable: true }).addTo(map);
+
+  marker.on('dragend', function (event) {
+    const lat = event.target.getLatLng().lat;
+    const lng = event.target.getLatLng().lng;
+    document.getElementById('location').value = `Latitude: ${lat}, Longitude: ${lng}`;
+  });
+
+  map.on('click', function (e) {
+    const clickedLocation = e.latlng;
+    marker.setLatLng(clickedLocation);
+    const lat = clickedLocation.lat;
+    const lng = clickedLocation.lng;
+    document.getElementById('location').value = `Latitude: ${lat}, Longitude: ${lng}`;
+  });
+}
+
 // Initialize function
 async function init() {
-  // Remove URL parameters on load
-  if (window.location.search) {
-    window.history.replaceState({}, document.title, window.location.pathname);
-  }
+  try {
+    // Set up auth form event listeners
+    const authForm = document.getElementById('auth-form');
+    const toggleAuthBtn = document.getElementById('toggle-auth');
+    const guestAccessBtn = document.getElementById('guest-access');
+    const signOutBtn = document.getElementById('sign-out');
 
-  // Set up auth form event listeners
-  const authForm = document.getElementById('auth-form');
-  const toggleAuthBtn = document.getElementById('toggle-auth');
-  const guestAccessBtn = document.getElementById('guest-access');
-  const signOutBtn = document.getElementById('sign-out');
+    if (authForm) authForm.addEventListener('submit', handleAuth);
+    if (toggleAuthBtn) toggleAuthBtn.addEventListener('click', toggleAuthMode);
+    if (guestAccessBtn) guestAccessBtn.addEventListener('click', handleGuestAccess);
+    if (signOutBtn) signOutBtn.addEventListener('click', handleSignOut);
 
-  if (authForm) authForm.addEventListener('submit', handleAuth);
-  if (toggleAuthBtn) toggleAuthBtn.addEventListener('click', toggleAuthMode);
-  if (guestAccessBtn) guestAccessBtn.addEventListener('click', handleGuestAccess);
-  if (signOutBtn) signOutBtn.addEventListener('click', handleSignOut);
+    // Check for existing session
+    const { data: { session }, error } = await supabase.auth.getSession();
+    if (error) throw error;
 
-  // Check for existing session
-  const { data: { session }, error } = await supabase.auth.getSession();
-  if (error) {
-    console.error('Error checking auth session:', error);
-    showAuth();
-    return;
-  }
-
-  if (session) {
-    currentUser = session.user;
-    showApp();
-    await Promise.all([loadTasks(), loadBookmarks()]);
-  } else {
-    showAuth();
-  }
-
-  // Set up auth state change listener
-  supabase.auth.onAuthStateChange(async (event, session) => {
-    // Remove URL parameters on auth state change
-    if (window.location.search) {
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-    if (event === 'SIGNED_IN') {
+    if (session) {
       currentUser = session.user;
       showApp();
       await Promise.all([loadTasks(), loadBookmarks()]);
-    } else if (event === 'SIGNED_OUT') {
-      currentUser = null;
+    } else {
       showAuth();
     }
-  });
+
+    // Set up auth state change listener
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN') {
+        currentUser = session.user;
+        showApp();
+        await Promise.all([loadTasks(), loadBookmarks()]);
+      } else if (event === 'SIGNED_OUT') {
+        currentUser = null;
+        showAuth();
+      }
+    });
+  } catch (error) {
+    console.error('Initialization error:', error);
+    showAuth();
+  }
 }
 
 // Initialize the app when the DOM is fully loaded
