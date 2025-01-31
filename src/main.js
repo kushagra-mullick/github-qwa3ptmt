@@ -1,6 +1,5 @@
 import { supabase } from './supabase';
 import './style.css';
-import * as AI from './services/ai';
 
 // Initialize Feather Icons
 function initializeIcons() {
@@ -417,28 +416,16 @@ async function addTask() {
     return;
   }
 
-  // Process natural language input
-  const nlpResult = AI.processNaturalLanguage(taskText);
-  
-  // Categorize the task
-  const category = AI.categorizeTask(nlpResult.task);
-  
-  // Analyze context and priority
-  const { priority, context } = AI.analyzeTaskContext(nlpResult.task);
-
   const [lat, lon] = locationText.match(/-?\d+\.\d+/g).map(Number);
   const reminderTime = getReminderTime(reminderOption);
 
   const newTask = {
-    task: nlpResult.task,
+    task: taskText,
     latitude: lat,
     longitude: lon,
     user_id: currentUser?.id,
     reminder_time: reminderTime,
-    reminder_sent: false,
-    category,
-    priority,
-    context: JSON.stringify(context)
+    reminder_sent: false
   };
 
   try {
@@ -448,15 +435,6 @@ async function addTask() {
         .insert([newTask]);
 
       if (error) throw error;
-      
-      // Generate and show task suggestions
-      const suggestions = await AI.generateTaskSuggestions(lat, lon);
-      if (suggestions.length > 0) {
-        suggestions.forEach(suggestion => {
-          showToast(`Suggestion: ${suggestion.task}`, 'success');
-        });
-      }
-      
       await loadTasks();
     } else {
       tasks.unshift({ ...newTask, id: Date.now() });
@@ -554,18 +532,6 @@ function renderTasks() {
                 class="task-checkbox"
               />
               <h3 class="task-title ${task.completed ? 'completed' : ''}">${task.task}</h3>
-            </div>
-            <div class="task-badges">
-              ${task.category ? `
-                <span class="badge badge-${task.category}">
-                  ${task.category}
-                </span>
-              ` : ''}
-              ${task.priority ? `
-                <span class="badge badge-${task.priority}">
-                  ${task.priority}
-                </span>
-              ` : ''}
             </div>
             <button onclick="deleteTask('${task.id}')" class="btn btn-outline delete">
               <i data-feather="trash-2"></i>

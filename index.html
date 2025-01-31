@@ -7,7 +7,7 @@
     <!-- Primary Meta Tags -->
     <title>Locnix.ai - Location-Based Task Management App</title>
     <meta name="title" content="Locnix.ai - Location-Based Task Management App">
-    <meta name="description" content="Organize your tasks by location with Locnix.ai. Create, manage, and track location-based tasks efficiently. Save favorite locations and manage your tasks on the go.">
+    <meta name="description" content="AI-powered location-based task management. Get smart reminders, contextual suggestions, and intelligent task organization.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,6 +22,7 @@
     <link href="https://unpkg.com/feather-icons" rel="stylesheet">
   </head>
   <body>
+    <!-- Fixed Top Navigation -->
     <nav class="navbar">
       <div class="navbar-container">
         <a href="/" class="navbar-brand">
@@ -39,11 +40,12 @@
       </div>
     </nav>
 
-    <main>
+    <main class="main-container">
       <!-- Auth Section -->
       <div class="auth-section" id="auth-section">
         <div class="card animate-slide-up">
           <h2 class="text-center mb-lg">Welcome to Locnix.ai</h2>
+          <p class="text-center text-secondary mb-lg">AI-powered location-based task management</p>
           <form id="auth-form" class="form">
             <div class="form-group">
               <label for="email" class="form-label">Email</label>
@@ -68,10 +70,25 @@
 
       <!-- App Section -->
       <div class="app-section" id="app-section" style="display: none;">
-        <!-- Hero Section -->
-        <section class="hero animate-fade-in">
-          <h1 class="hero-title">Organize Tasks by Location</h1>
-          <p class="hero-subtitle">Create, manage, and track your tasks based on location</p>
+        <!-- AI Features Section -->
+        <section class="ai-features animate-fade-in">
+          <div class="feature-cards">
+            <div class="feature-card">
+              <i data-feather="map-pin"></i>
+              <h3>Location-aware Reminders</h3>
+              <p>Get smart reminders based on your location</p>
+            </div>
+            <div class="feature-card">
+              <i data-feather="tag"></i>
+              <h3>Smart Categorization</h3>
+              <p>AI automatically categorizes your tasks</p>
+            </div>
+            <div class="feature-card">
+              <i data-feather="trending-up"></i>
+              <h3>Task Analytics</h3>
+              <p>Insights to optimize your productivity</p>
+            </div>
+          </div>
         </section>
 
         <!-- Task Creation -->
@@ -79,7 +96,7 @@
           <h2 class="section-title">Create New Task</h2>
           <div class="form-group">
             <label for="task" class="form-label">Task Description</label>
-            <input type="text" id="task" class="form-input" placeholder="What needs to be done?" />
+            <input type="text" id="task" class="form-input" placeholder="What needs to be done? Try 'Remind me to buy groceries when I'm near the store'" />
           </div>
           
           <div class="form-group">
@@ -107,7 +124,16 @@
           </div>
 
           <div class="form-group">
-            <label for="reminder-time" class="form-label">Set Reminder</label>
+            <label for="reminder-type" class="form-label">Reminder Type</label>
+            <select id="reminder-type" class="form-select">
+              <option value="time">Time-based</option>
+              <option value="location">Location-based</option>
+              <option value="smart">Smart (AI-suggested)</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="time-reminder">
+            <label for="reminder-time" class="form-label">Set Time Reminder</label>
             <select id="reminder-time" class="reminder-select">
               <option value="">No reminder</option>
               <option value="1h">In 1 hour</option>
@@ -119,6 +145,12 @@
             </select>
           </div>
 
+          <div class="form-group" id="location-reminder" style="display: none;">
+            <label for="reminder-radius" class="form-label">Trigger Distance (meters)</label>
+            <input type="range" id="reminder-radius" min="100" max="1000" step="100" value="500" class="range-input" />
+            <span id="radius-value">500m</span>
+          </div>
+
           <button onclick="addTask()" class="btn btn-primary">
             <i data-feather="plus"></i>
             Add Task
@@ -127,6 +159,31 @@
 
         <!-- Map Section -->
         <div id="map" class="map-container"></div>
+
+        <!-- Task Management -->
+        <section class="card tasks-section animate-slide-up">
+          <div class="tasks-header">
+            <h2 class="section-title">Tasks</h2>
+            <div class="ai-insights">
+              <i data-feather="trending-up"></i>
+              <span id="ai-suggestion">AI analyzing your task patterns...</span>
+            </div>
+          </div>
+          
+          <div class="task-filters">
+            <button onclick="filterTasks('all')" class="btn btn-outline active">All</button>
+            <button onclick="filterTasks('active')" class="btn btn-outline">Active</button>
+            <button onclick="filterTasks('completed')" class="btn btn-outline">Completed</button>
+          </div>
+          
+          <div class="task-categories">
+            <span class="category-tag" data-category="work">Work</span>
+            <span class="category-tag" data-category="errands">Errands</span>
+            <span class="category-tag" data-category="personal">Personal</span>
+          </div>
+          
+          <ul id="tasks" class="tasks-list"></ul>
+        </section>
 
         <!-- Bookmarks Section -->
         <section class="card bookmarks-section animate-slide-up">
@@ -144,17 +201,6 @@
             </button>
           </div>
           <ul id="bookmarks-list" class="bookmarks-list"></ul>
-        </section>
-
-        <!-- Tasks List -->
-        <section class="card tasks-section animate-slide-up">
-          <h2 class="section-title">Tasks</h2>
-          <div class="task-filters">
-            <button onclick="filterTasks('all')" class="btn btn-outline active">All</button>
-            <button onclick="filterTasks('active')" class="btn btn-outline">Active</button>
-            <button onclick="filterTasks('completed')" class="btn btn-outline">Completed</button>
-          </div>
-          <ul id="tasks" class="tasks-list"></ul>
         </section>
       </div>
     </main>
