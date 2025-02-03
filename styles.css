@@ -1,0 +1,101 @@
+:root {
+    --spotify-green: #1DB954;
+    --dark-bg: #121212;
+    --secondary-btn-bg: #242424;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--dark-bg);
+    color: white;
+}
+
+.container {
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.logo img {
+    width: 80px;
+    height: 80px;
+    margin: 40px 0;
+}
+
+.hero-text {
+    margin: 40px 0;
+}
+
+.hero-text h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.hero-text h2 {
+    font-size: 32px;
+    margin-top: 0;
+}
+
+.cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 30px 0;
+}
+
+.primary-btn {
+    background-color: var(--spotify-green);
+    color: black;
+    border: none;
+    padding: 16px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+
+.secondary-btn {
+    background-color: var(--secondary-btn-bg);
+    color: white;
+    border: 1px solid #404040;
+    padding: 16px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.secondary-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.login-link a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .hero-text h1, .hero-text h2 {
+        font-size: 28px;
+    }
+} 
