@@ -1,54 +1,75 @@
 :root {
-    --spotify-green: #1DB954;
-    --dark-bg: #121212;
-    --secondary-btn-bg: #242424;
+    --primary-orange: #FF8C42;
+    --guest-blue: #4A90E2;
+    --bg-color: #FFFFFF;
+    --text-dark: #333333;
 }
 
 body {
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: var(--dark-bg);
-    color: white;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: white;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary-orange);
+    font-size: 24px;
+}
+
+.nav-logo img {
+    height: 30px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: var(--text-dark);
+    text-decoration: none;
 }
 
 .container {
-    max-width: 450px;
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 0 20px;
     text-align: center;
 }
 
-.logo img {
-    width: 80px;
-    height: 80px;
-    margin: 40px 0;
-}
-
 .hero-text {
-    margin: 40px 0;
+    margin: 60px 0;
 }
 
-.hero-text h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-.hero-text h2 {
-    font-size: 32px;
-    margin-top: 0;
+.hero-text h1, .hero-text h2 {
+    font-size: 48px;
+    margin: 10px 0;
 }
 
 .cta-buttons {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin: 30px 0;
+    gap: 12px;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 .primary-btn {
-    background-color: var(--spotify-green);
-    color: black;
+    background-color: var(--primary-orange);
+    color: white;
     border: none;
     padding: 16px;
     border-radius: 25px;
@@ -59,9 +80,9 @@ body {
 }
 
 .secondary-btn {
-    background-color: var(--secondary-btn-bg);
-    color: white;
-    border: 1px solid #404040;
+    background-color: white;
+    color: var(--text-dark);
+    border: 1px solid #ddd;
     padding: 16px;
     border-radius: 25px;
     font-size: 16px;
@@ -79,23 +100,23 @@ body {
     height: 20px;
 }
 
+.login-link {
+    margin-top: 20px;
+}
+
 .login-link a {
-    color: white;
+    color: var(--text-dark);
     text-decoration: none;
     font-weight: bold;
 }
 
-.login-link a:hover {
-    text-decoration: underline;
-}
-
 /* Mobile responsiveness */
-@media (max-width: 480px) {
-    .container {
-        padding: 20px;
+@media (max-width: 768px) {
+    .hero-text h1, .hero-text h2 {
+        font-size: 32px;
     }
     
-    .hero-text h1, .hero-text h2 {
-        font-size: 28px;
+    .navbar {
+        padding: 15px 20px;
     }
 } 
