@@ -1,131 +1,83 @@
 import { supabase } from './supabase';
-import './style.css';
 
-// Initialize Feather Icons
-if (window.feather) {
-  feather.replace();
-}
-
-// Auth Modal Management
-const authModal = document.getElementById('auth-modal');
+// DOM Elements
 const loginBtn = document.getElementById('login-btn');
 const signupBtn = document.getElementById('signup-btn');
-const getStartedBtn = document.getElementById('get-started-btn');
-const closeAuthBtn = document.getElementById('close-auth');
+const authModal = document.getElementById('auth-modal');
 const authForm = document.getElementById('auth-form');
+const authSubmit = document.getElementById('auth-submit');
 const toggleAuthBtn = document.getElementById('toggle-auth');
+const guestAccessBtn = document.getElementById('guest-access');
 
 let isSignUp = false;
 
-function showAuthModal(e) {
-  e.preventDefault();
-  authModal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function hideAuthModal() {
-  authModal.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-function toggleAuthMode() {
-  isSignUp = !isSignUp;
-  const submitBtn = authForm.querySelector('button[type="submit"]');
-  submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
-  toggleAuthBtn.textContent = isSignUp ? 'Switch to Sign In' : 'Switch to Sign Up';
-}
-
-async function handleAuth(e) {
-  e.preventDefault();
-  
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-  const submitBtn = authForm.querySelector('button[type="submit"]');
-  
-  try {
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<div class="loading"></div>';
-
-    if (isSignUp) {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password
-      });
-
-      if (error) throw error;
-
-      if (data?.user) {
-        alert('Registration successful! Please check your email to confirm your account.');
-        hideAuthModal();
-      }
-    } else {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) throw error;
-
-      if (data?.user) {
-        hideAuthModal();
-        window.location.href = '/app';
-      }
-    }
-  } catch (error) {
-    alert(error.message);
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
-  }
-}
-
 // Event Listeners
-loginBtn?.addEventListener('click', showAuthModal);
-signupBtn?.addEventListener('click', (e) => {
-  e.preventDefault();
-  isSignUp = true;
-  toggleAuthMode();
-  showAuthModal(e);
+loginBtn.addEventListener('click', () => {
+    isSignUp = false;
+    authSubmit.textContent = 'Sign In';
+    toggleAuthBtn.textContent = 'Switch to Sign Up';
+    authModal.style.display = 'flex';
 });
-getStartedBtn?.addEventListener('click', (e) => {
-  e.preventDefault();
-  isSignUp = true;
-  toggleAuthMode();
-  showAuthModal(e);
+
+signupBtn.addEventListener('click', () => {
+    isSignUp = true;
+    authSubmit.textContent = 'Sign Up';
+    toggleAuthBtn.textContent = 'Switch to Sign In';
+    authModal.style.display = 'flex';
 });
-closeAuthBtn?.addEventListener('click', hideAuthModal);
-authForm?.addEventListener('submit', handleAuth);
-toggleAuthBtn?.addEventListener('click', toggleAuthMode);
+
+toggleAuthBtn.addEventListener('click', () => {
+    isSignUp = !isSignUp;
+    authSubmit.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+    toggleAuthBtn.textContent = isSignUp ? 'Switch to Sign In' : 'Switch to Sign Up';
+});
+
+authForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        if (isSignUp) {
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password
+            });
+            if (error) throw error;
+            alert('Registration successful! Please sign in.');
+            isSignUp = false;
+            authSubmit.textContent = 'Sign In';
+            toggleAuthBtn.textContent = 'Switch to Sign Up';
+        } else {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password
+            });
+            if (error) throw error;
+            window.location.href = '/app';
+        }
+    } catch (error) {
+        alert(error.message);
+    }
+});
+
+guestAccessBtn.addEventListener('click', () => {
+    window.location.href = '/app';
+});
 
 // Close modal when clicking outside
-authModal?.addEventListener('click', (e) => {
-  if (e.target === authModal) {
-    hideAuthModal();
-  }
+authModal.addEventListener('click', (e) => {
+    if (e.target === authModal) {
+        authModal.style.display = 'none';
+    }
 });
 
-// Smooth scroll for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    const href = this.getAttribute('href');
-    if (href !== '#' && href.startsWith('#')) {
-      e.preventDefault();
-      const target = document.querySelector(href);
-      if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth'
-        });
-      }
+// Check for existing session
+async function checkSession() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+        window.location.href = '/app';
     }
-  });
-});
+}
 
-// Initialize the app when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-  // Check for existing session
-  supabase.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN') {
-      window.location.href = '/app';
-    }
-  });
-});
+checkSession();

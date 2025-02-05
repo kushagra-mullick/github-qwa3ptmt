@@ -1,199 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Locnix.ai - Smart Location-Based Task Management</title>
-    <meta name="description" content="AI-powered location-based task management. Get smart reminders, contextual suggestions, and intelligent task organization." />
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  </head>
-  <body class="dark-theme">
-    <!-- Navigation -->
-    <nav class="navbar">
-      <div class="container">
-        <a href="/" class="logo">
-          <div class="logo-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-              <circle cx="12" cy="10" r="3"></circle>
-            </svg>
-          </div>
-          <span>Locnix.ai</span>
-        </a>
-        <div class="nav-links">
-          <a href="#features">Features</a>
-          <a href="#about">About</a>
-          <a href="#blog">Blog</a>
-        </div>
-        <div class="nav-auth">
-          <button class="btn btn-ghost" id="login-btn">Login</button>
-          <button class="btn btn-primary" id="signup-btn">Sign up</button>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="container">
-        <div class="new-badge">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-          </svg>
-          <span>New: AI-powered location suggestions just landed</span>
-        </div>
-        
-        <h1 class="hero-title">
-          Think smarter with
-          <span class="gradient-text">location-based AI</span>
-        </h1>
-        
-        <p class="hero-subtitle">
-          Never miss a task, idea, or opportunity based on your location.
-          Let AI guide your daily journey.
-        </p>
-
-        <div class="hero-cta">
-          <button class="btn btn-primary btn-large" id="get-started-btn">
-            Get started
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"></path>
-            </svg>
-          </button>
-          <a href="#features" class="btn btn-ghost btn-large">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M10 8l6 4-6 4V8z"></path>
-            </svg>
-            See features
-          </a>
-        </div>
-
-        <div class="hero-image">
-          <div class="app-preview">
-            <div class="app-window">
-              <div class="window-header">
-                <div class="window-actions">
-                  <span></span>
-                  <span></span>
-                  <span></span>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locnix.ai</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/feather-icons/dist/feather.css" rel="stylesheet">
+</head>
+<body>
+    <div class="landing-page">
+        <!-- Header -->
+        <header>
+            <nav>
+                <div class="logo">Locnix.ai</div>
+                <div class="nav-links">
+                    <button id="login-btn" class="btn-login">Login</button>
+                    <button id="signup-btn" class="btn-signup">Start free trial</button>
                 </div>
-              </div>
-              <div class="window-content">
-                <div class="task-list">
-                  <div class="task-item">
-                    <div class="task-icon">📍</div>
-                    <div class="task-info">
-                      <h4>Grocery Shopping</h4>
-                      <p>Nearby: Whole Foods Market (0.2 mi)</p>
-                    </div>
-                  </div>
-                  <div class="task-item active">
-                    <div class="task-icon">🏃</div>
-                    <div class="task-info">
-                      <h4>Evening Run</h4>
-                      <p>Perfect weather at Central Park</p>
-                    </div>
-                  </div>
-                  <div class="task-item">
-                    <div class="task-icon">📚</div>
-                    <div class="task-info">
-                      <h4>Return Books</h4>
-                      <p>Library closes in 2 hours</p>
-                    </div>
-                  </div>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <div class="landing-hero">
+            <div class="glow-effect glow-1"></div>
+            <div class="glow-effect glow-2"></div>
+            
+            <div class="new-badge">
+                <i data-feather="zap"></i>
+                New: AI integration just landed
+            </div>
+
+            <h1 class="landing-title">Think Smarter with Locnix.ai</h1>
+            <p class="landing-subtitle">Never miss a task with AI-powered location-based reminders</p>
+
+            <div class="landing-features">
+                <div class="landing-feature">
+                    <h3>
+                        <i data-feather="map-pin"></i>
+                        Location-aware Reminders
+                    </h3>
+                    <p>Get smart reminders based on your location, like picking up groceries when near your favorite store.</p>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-      <div class="container">
-        <h2 class="section-title">Powered by AI</h2>
-        <p class="section-subtitle">Experience smart location-based task management</p>
-        
-        <div class="feature-grid">
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-              </svg>
-            </div>
-            <h3>Smart Location Reminders</h3>
-            <p>Get intelligent reminders based on your location and daily patterns</p>
-          </div>
-          
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-              </svg>
-            </div>
-            <h3>AI Task Categorization</h3>
-            <p>Automatically organize tasks based on context and location</p>
-          </div>
-          
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 6v6l4 2"></path>
-              </svg>
-            </div>
-            <h3>Predictive Scheduling</h3>
-            <p>Optimize your day with AI-powered task scheduling</p>
-          </div>
-          
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-              </svg>
-            </div>
-            <h3>Natural Language Input</h3>
-            <p>Add tasks using natural speech or text</p>
-          </div>
-        </div>
-      </div>
-    </section>
+                <div class="landing-feature">
+                    <h3>
+                        <i data-feather="tag"></i>
+                        Smart Categorization
+                    </h3>
+                    <p>AI automatically organizes your tasks into categories and suggests priorities based on context.</p>
+                </div>
 
-    <!-- Auth Section -->
-    <div class="auth-modal" id="auth-modal">
-      <div class="auth-content">
-        <div class="auth-header">
-          <h2>Welcome to Locnix.ai</h2>
-          <button class="close-btn" id="close-auth">×</button>
+                <div class="landing-feature">
+                    <h3>
+                        <i data-feather="trending-up"></i>
+                        Task Analytics
+                    </h3>
+                    <p>Gain insights into your productivity patterns and optimize your daily routine.</p>
+                </div>
+            </div>
         </div>
-        <form id="auth-form">
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" required />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" required />
-          </div>
-          <button type="submit" class="btn btn-primary w-full">Sign In</button>
-          <button type="button" class="btn btn-ghost w-full" id="toggle-auth">
-            Switch to Sign Up
-          </button>
-        </form>
-      </div>
+
+        <!-- Auth Modal -->
+        <div id="auth-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h2>Welcome to Locnix.ai</h2>
+                <form id="auth-form">
+                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <button type="submit" id="auth-submit">Sign In</button>
+                </form>
+                <button id="toggle-auth">Switch to Sign Up</button>
+                <button id="guest-access">Continue as Guest</button>
+            </div>
+        </div>
     </div>
 
-    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+        feather.replace();
+    </script>
     <script type="module" src="/src/main.js"></script>
-  </body>
+</body>
 </html>
