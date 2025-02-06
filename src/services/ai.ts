@@ -1,7 +1,7 @@
 import { supabase } from '../supabase';
 
 // Task categories and their associated keywords
-const taskCategories = {
+export const taskCategories = {
   work: ['meeting', 'presentation', 'report', 'email', 'client', 'project', 'deadline', 'office'],
   shopping: ['buy', 'purchase', 'grocery', 'store', 'mall', 'shop', 'market'],
   health: ['gym', 'workout', 'exercise', 'doctor', 'appointment', 'medical', 'fitness'],
