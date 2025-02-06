@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { categorizeTask, analyzeTaskContext, generateTaskSuggestions, processNaturalLanguage } from './services/ai';
 import './style.css';
 
 let tasks = [];
@@ -9,6 +10,9 @@ let isMapVisible = false;
 let currentFilter = 'all';
 let watchId = null;
 let searchTimeout = null;
+let isRecording = false;
+let mediaRecorder = null;
+let audioChunks = [];
 
 // Auth state management
 let currentUser = null;
@@ -24,6 +28,87 @@ const reminderOptions = [
   { value: '2d', label: 'In 2 days' },
   { value: '1w', label: 'In 1 week' }
 ];
+
+// Initialize speech recognition
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+if (recognition) {
+  recognition.continuous = false;
+  recognition.lang = 'en-US';
+  
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    document.getElementById('task').value = transcript;
+    processTaskInput(transcript);
+  };
+}
+
+function toggleVoiceInput() {
+  if (!recognition) {
+    alert('Speech recognition is not supported in your browser.');
+    return;
+  }
+
+  if (isRecording) {
+    recognition.stop();
+    isRecording = false;
+  } else {
+    recognition.start();
+    isRecording = true;
+  }
+
+  const voiceButton = document.querySelector('.voice-input-btn');
+  voiceButton.innerHTML = isRecording ? '🔴' : '🎤';
+}
+
+async function processTaskInput(input) {
+  const { task, location, time } = processNaturalLanguage(input);
+  const category = categorizeTask(task);
+  const { priority, context } = analyzeTaskContext(task);
+
+  // Update UI with processed information
+  document.getElementById('task').value = task;
+  if (location) {
+    document.getElementById('location-search').value = location;
+    // Trigger location search
+    await searchLocation(location);
+  }
+
+  // Show task category
+  const categoryTag = document.createElement('div');
+  categoryTag.className = `category-tag ${category}`;
+  categoryTag.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+  document.querySelector('.task-categories').appendChild(categoryTag);
+
+  // Generate and show suggestions
+  if (marker) {
+    const suggestions = await generateTaskSuggestions(
+      marker.getLatLng().lat,
+      marker.getLatLng().lng
+    );
+    showSuggestions(suggestions);
+  }
+}
+
+function showSuggestions(suggestions) {
+  const suggestionsContainer = document.querySelector('.task-suggestions');
+  suggestionsContainer.innerHTML = suggestions.map(suggestion => `
+    <div class="suggestion-item" onclick="useTaskSuggestion('${suggestion.task}', '${suggestion.category}')">
+      <span class="suggestion-icon">💡</span>
+      <span>${suggestion.task}</span>
+      <span class="suggestion-category">${suggestion.category}</span>
+    </div>
+  `).join('');
+}
+
+function useTaskSuggestion(task, category) {
+  document.getElementById('task').value = task;
+  // Highlight the corresponding category
+  document.querySelectorAll('.category-tag').forEach(tag => {
+    tag.classList.toggle('active', tag.classList.contains(category));
+  });
+}
 
 function getReminderTime(option) {
   if (!option) return null;
@@ -571,7 +656,39 @@ async function init() {
 }
 
 // Initialize the app when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+  init();
+  
+  // Add voice input button
+  const taskInput = document.getElementById('task');
+  const voiceButton = document.createElement('button');
+  voiceButton.className = 'voice-input-btn';
+  voiceButton.innerHTML = '🎤';
+  voiceButton.onclick = toggleVoiceInput;
+  taskInput.parentElement.appendChild(voiceButton);
+
+  // Add task categories
+  const categoriesContainer = document.createElement('div');
+  categoriesContainer.className = 'task-categories';
+  Object.keys(taskCategories).forEach(category => {
+    const tag = document.createElement('div');
+    tag.className = `category-tag ${category}`;
+    tag.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+    categoriesContainer.appendChild(tag);
+  });
+  document.querySelector('.input-section').insertBefore(
+    categoriesContainer,
+    document.querySelector('.location-input-group')
+  );
+
+  // Add suggestions container
+  const suggestionsContainer = document.createElement('div');
+  suggestionsContainer.className = 'task-suggestions';
+  document.querySelector('.input-section').insertBefore(
+    suggestionsContainer,
+    document.querySelector('.location-input-group')
+  );
+});
 
 // Make functions available globally
 window.getCurrentLocation = getCurrentLocation;
@@ -587,3 +704,5 @@ window.useBookmark = useBookmark;
 window.addBookmark = addBookmark;
 window.deleteBookmark = deleteBookmark;
 window.selectLocation = selectLocation;
+window.useTaskSuggestion = useTaskSuggestion;
+window.toggleVoiceInput = toggleVoiceInput;
