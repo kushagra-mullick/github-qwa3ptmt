@@ -3,97 +3,101 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#000000">
-    <title>Locnix.ai</title>
-    <link rel="stylesheet" href="styles.css">
-    <meta name="title" content="Locnix.ai - Location-Based Task Management App">
-    <meta name="description" content="AI-powered location-based task management. Get smart reminders, contextual suggestions, and intelligent task organization.">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="icons/icon-192x192.png">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Styles -->
+    <!-- Primary Meta Tags -->
+    <title>Locnix.ai - Location-Based Task Management App</title>
+    <meta name="title" content="Locnix.ai - Location-Based Task Management App">
+    <meta name="description" content="Organize your tasks by location with Locnix.ai. Create, manage, and track location-based tasks efficiently. Save favorite locations and manage your tasks on the go.">
+    <meta name="keywords" content="location based tasks, task management, location tracking, task organizer, location bookmarks, productivity app">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://glistening-smakager-3367ad.netlify.app/">
+    <meta property="og:title" content="Locnix.ai - Location-Based Task Management App">
+    <meta property="og:description" content="Organize your tasks by location with Locnix.ai. Create, manage, and track location-based tasks efficiently. Save favorite locations and manage your tasks on the go.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://glistening-smakager-3367ad.netlify.app/">
+    <meta property="twitter:title" content="Locnix.ai - Location-Based Task Management App">
+    <meta property="twitter:description" content="Organize your tasks by location with Locnix.ai. Create, manage, and track location-based tasks efficiently. Save favorite locations and manage your tasks on the go.">
+    
+    <!-- Additional SEO -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Locnix.ai">
+    <link rel="canonical" href="https://glistening-smakager-3367ad.netlify.app/">
+    
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    
-    <!-- Icons -->
-    <link href="https://unpkg.com/feather-icons" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   </head>
   <body>
-    <nav class="navbar">
-      <div class="logo">
-        <img src="location-icon.png" alt="">
-        <a href="#">Locnix.ai</a>
-      </div>
-      <div class="nav-links">
-        <a href="#">Tasks</a>
-        <a href="#">Bookmarks</a>
-      </div>
-      <button class="menu-toggle">
-        <span>☰</span>
-      </button>
-    </nav>
-
-    <div class="login-container">
-      <h1>Welcome to Locnix.ai</h1>
-      <p>AI-powered location-based task management</p>
-      
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" class="form-control">
+    <div class="container">
+      <div class="auth-section" id="auth-section">
+        <h2>Welcome to Locnix.ai</h2>
+        <form id="auth-form">
+          <input type="email" id="email" placeholder="Email" required />
+          <input type="password" id="password" placeholder="Password" required />
+          <button type="submit" id="auth-button">Sign In</button>
+          <button type="button" id="toggle-auth">Switch to Sign Up</button>
+          <button type="button" id="guest-access" class="guest-btn">Continue as Guest</button>
+        </form>
       </div>
 
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" class="form-control">
-      </div>
-
-      <div class="button-group">
-        <button class="sign-in">Sign In</button>
-        <button class="sign-up">Switch to Sign Up</button>
-        <button class="guest">Continue as Guest</button>
+      <div class="app-section" id="app-section" style="display: none;">
+        <div class="user-status">
+          <span id="user-status-text"></span>
+          <button id="sign-out" class="sign-out-btn">Sign Out</button>
+        </div>
+        
+        <div class="input-section">
+          <input type="text" id="task" placeholder="What needs to be done?" />
+          <div class="location-input-group">
+            <div class="location-search">
+              <input type="text" id="location-search" placeholder="Search for a location..." />
+              <div id="search-results" class="search-results"></div>
+            </div>
+            <input type="text" id="location" placeholder="Location" readonly />
+            <div class="location-buttons">
+              <button onclick="getCurrentLocation()">📍 Current Location</button>
+              <button onclick="toggleMap()">🗺️ Select on Map</button>
+            </div>
+          </div>
+          <select id="reminder-time" class="reminder-select">
+            <option value="">No reminder</option>
+            <option value="1h">In 1 hour</option>
+            <option value="2h">In 2 hours</option>
+            <option value="4h">In 4 hours</option>
+            <option value="1d">In 1 day</option>
+            <option value="2d">In 2 days</option>
+            <option value="1w">In 1 week</option>
+          </select>
+          <button onclick="addTask()">Add Task</button>
+        </div>
+        
+        <div class="bookmarks-section">
+          <h3>Saved Locations</h3>
+          <div class="add-bookmark-form">
+            <input type="text" id="bookmark-name" placeholder="Name this location (e.g., Home, Work)" />
+            <button onclick="addBookmark()">Save Location</button>
+          </div>
+          <ul id="bookmarks-list" class="bookmarks-list"></ul>
+        </div>
+        
+        <div id="map" class="map"></div>
+        
+        <div class="task-list">
+          <h2>Tasks</h2>
+          <div class="task-filters">
+            <button onclick="filterTasks('all')" class="active">All</button>
+            <button onclick="filterTasks('active')">Active</button>
+            <button onclick="filterTasks('completed')">Completed</button>
+          </div>
+          <ul id="tasks"></ul>
+        </div>
       </div>
     </div>
-
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    
     <script type="module" src="/src/main.js"></script>
-    <script>
-      // Initialize Feather Icons
-      document.addEventListener('DOMContentLoaded', () => {
-        feather.replace();
-      });
-
-      // Register the service worker
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js')
-            .then((registration) => {
-              console.log('Service Worker registered with scope:', registration.scope);
-            })
-            .catch((error) => {
-              console.log('Service Worker registration failed:', error);
-            });
-        });
-      }
-
-      AOS.init({
-        duration: 800,
-        once: true
-      });
-
-      // Mobile menu toggle
-      const mobileMenuBtn = document.querySelector('.menu-toggle');
-      const navLinks = document.querySelector('.nav-links');
-      
-      mobileMenuBtn.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-      });
-    </script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   </body>
 </html>
